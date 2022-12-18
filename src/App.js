@@ -1,47 +1,20 @@
-import {register,signIn} from "./firebase"
-import './App.css';
-import {useState} from 'react';
+import Home from "./pages/Home"
+import Register from "./pages/Register"
+import Login from "./pages/Login"
+import {Toaster} from "react-hot-toast"
+import {Routes,Route} from "react-router-dom"
 function App() {
-  const [email,setEmail]=useState();
-  const [password,setPassword]=useState();
-  const registerHandle=async(e)=>{
-    e.preventDefault();
-    let user={};
-    try{
-      user=await register(email,password);
-      alert("Success.");
-    }
-    catch(error)
-    {
-      alert(error.message);
-    } 
-   
-    console.log(user);
-  }
-  const signinHandle=async(e)=>{
-    e.preventDefault();
-    let user={};
-    try{
-      user=await signIn(email,password);
-      alert("Success.");
-    }
-    catch(error)
-    {
-      alert(error.message);
-    } 
-    console.log(user);
-  }
+
   return (
-    <div className="App">
-      <h1>Register</h1>
-      <form >
-        Email:<input  value={email} onChange={(e)=>{setEmail(e.target.value)}} type="text"/> 
-        Password:<input value={password} onChange={(e)=>{setPassword(e.target.value)}} type="password"/>
-        <br/><br/><button disabled={!email || !password} type="submit" onClick={registerHandle}>Register</button>
-        <button disabled={!email || !password} type="submit" onClick={signinHandle}>Sign in</button>
-      </form>
-    </div>
-  );
+    <>
+      <Toaster/>
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="/register" element={<Register/>}/>
+        <Route path="/login" element={<Login/>}/>
+      </Routes>
+    </>
+      );
 }
 
 export default App;
