@@ -1,8 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { updateProfile ,getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,onAuthStateChanged,signOut  } from "firebase/auth";
+import { sendEmailVerification ,updateProfile ,getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,onAuthStateChanged,signOut  } from "firebase/auth";
 import toast from "react-hot-toast"
 import store from "./store"
-import { useNavigate } from "react-router-dom";
 
 import { login as loginHandle,logout as logoutHandle } from "./store/auth";
 const firebaseConfig= {
@@ -75,6 +74,17 @@ export const updateUser=async(data)=>{
     catch(e){
         toast.success("An error occured.");
     }
+}
+export const verifyEmail=async()=>{
+    try{
+        await sendEmailVerification(auth.currentUser)
+        toast.success("Verification email sent. Check your inbox.")
+        return true
+    }
+    catch(e){
+        toast.error(e.message)
+    }
+    
 }
 export default app
 
