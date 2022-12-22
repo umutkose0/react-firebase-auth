@@ -1,11 +1,17 @@
 import { signIn} from "./../firebase"
 import {useState} from 'react';
+import { useNavigate } from "react-router-dom";
 export default function Login(){
+    const navigate=useNavigate()
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
     const submitHandle=async(e)=>{
         e.preventDefault();
-        await signIn(email,password);
+        const user=await signIn(email,password);
+        if(user)
+        {
+          navigate('/',{replace:true})
+        }
       }
     return(
     <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

@@ -1,11 +1,14 @@
 import {register} from "./../firebase"
-import {useState} from 'react';
+import {useState} from 'react'
+
 export default function Register(){
+
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
     const submitHandle=async(e)=>{
         e.preventDefault();
-        await register(email,password);
+        const user=await register(email,password);
+
       }
     return(
     <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

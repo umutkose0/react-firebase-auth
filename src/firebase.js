@@ -1,6 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,onAuthStateChanged,signOut  } from "firebase/auth";
+import { updateProfile ,getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,onAuthStateChanged,signOut  } from "firebase/auth";
 import toast from "react-hot-toast"
+import store from "./store"
+import { useNavigate } from "react-router-dom";
+
+import { login as loginHandle,logout as logoutHandle } from "./store/auth";
 const firebaseConfig= {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -10,7 +14,7 @@ const firebaseConfig= {
     appId: process.env.REACT_APP_APP_ID,
   };
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const auth = getAuth(app);
 export const register=async(email,password)=>{
     try
     {
@@ -39,25 +43,38 @@ export const getCurrentUser=()=>{
      onAuthStateChanged(auth,(user)=>{
         if(user)
         {
-            toast.success("User session found");
-          
+            toast.success("You are already logged in.");
+            store.dispatch(loginHandle(user))
+            return true
         }
         else
         {
-            toast.error("There is no session.");
+            toast.error("Logged out.");
+            store.dispatch(logoutHandle());
         }
     })
-}
+} 
+getCurrentUser()
 export const logOut=async()=>{
     try{
         await signOut(auth);
-        getCurrentUser();
+        toast.success("You are logged out.")
     }
     catch(e)
     {
         toast.error(e.message);
     }
     
+}
+export const updateUser=async(data)=>{
+    try{
+        await updateProfile(auth.currentUser,data)
+        toast.success("profile updated.");
+        return true
+    }
+    catch(e){
+        toast.success("An error occured.");
+    }
 }
 export default app
 
