@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { sendEmailVerification ,updateProfile ,getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,onAuthStateChanged,signOut  } from "firebase/auth";
+import {signInWithPopup,GoogleAuthProvider , sendEmailVerification ,updateProfile ,getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,onAuthStateChanged,signOut  } from "firebase/auth";
 import toast from "react-hot-toast"
 import store from "./store"
 
@@ -36,7 +36,20 @@ export const signIn=async(email,password)=>{
     catch(e)
     {
         toast.error(e.message);
+        return false;
     }
+}
+export const googleSignIn=async()=>{
+    const provider=new GoogleAuthProvider();
+    try{
+        const r=await signInWithPopup(auth,provider)
+        console.log(r.user);
+        toast.success("logged in with google");
+        return r.user;
+    }catch(e){
+        toast.error(e.message);
+    }
+    
 }
 export const getCurrentUser=()=>{
      onAuthStateChanged(auth,(user)=>{

@@ -1,4 +1,4 @@
-import { signIn} from "./../firebase"
+import { signIn,googleSignIn} from "./../firebase"
 import {useState} from 'react';
 import { useNavigate } from "react-router-dom";
 export default function Login(){
@@ -12,6 +12,14 @@ export default function Login(){
         {
           navigate('/',{replace:true})
         }
+      }
+      const googleLogin=async(e)=>{
+        e.preventDefault();
+       const user=await googleSignIn();
+       if(user)
+       {
+         navigate('/',{replace:true})
+       }
       }
     return(
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -57,6 +65,9 @@ export default function Login(){
                 </span>
                 Sign in
               </button>
+              <button className="mt-3 content-center p-5 disabled:opacity-60 group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" onClick={googleLogin}>
+                <img className="w-7 mr-2" src="https://developers.google.com/static/identity/images/g-logo.png"/>
+                Sign with google</button>
             </div>
           </form>
         </div>
